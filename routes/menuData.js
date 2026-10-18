@@ -5,7 +5,7 @@ const getBilList = require('./api/getBilList');
 const getAccent = require('./api/getAccent');
 const getParticular = require('./api/getParticular');
 const getBalance = require('./api/getBalance');
-const getconsumer = require('./api/getconsumer');
+const getconsumer = require('./api/getConsumer');
 const getSubsidy = require('./api/getSubsidy');
 
 /**
