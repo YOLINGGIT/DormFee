@@ -27,7 +27,6 @@ function startCleanup() {
 startCleanup();
 
 async function getCachedData(key, fetchFn, ttl = DEFAULT_TTL) {
-   ttl = key === 'access_token' ? 1.9 * 3600 : DEFAULT_TTL; // token 1.9h，其他 5min
   const now = Date.now();
   const cached = caches.get(key);
 

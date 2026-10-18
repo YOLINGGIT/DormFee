@@ -5,6 +5,8 @@ const getBilList = require('./api/getBilList');
 const getAccent = require('./api/getAccent');
 const getParticular = require('./api/getParticular');
 const getBalance = require('./api/getBalance');
+const getconsumer = require('./api/getconsumer');
+const getSubsidy = require('./api/getSubsidy');
 
 /**
  * 单独获取并缓存 access token
@@ -13,7 +15,6 @@ const getBalance = require('./api/getBalance');
  */
 async function getAccessToken() {
     return await getCachedData('access_token', async () => {
-        console.log('enter door acce');
         const res = await getAccent();
         const { data } = res;
         // 这里返回 token 字符串，缓存层会把它存起来
@@ -79,6 +80,36 @@ router.get('/balance', async (req, res) => {
         res.json(data);
     } else {
         res.status(500).json({ code: 500, msg: '获取余额数据失败' });
+    }
+
+})
+router.get('/consumer', async (req, res) => {
+    const token = await getAccessToken();
+    const cacheKey = 'Consumer'
+    // 2. 用 token 拉取当前页的账单数据
+    const data = await getCachedData(cacheKey, async () => {
+        const res = await getconsumer(token);
+        return res;
+    });
+    if (data) {
+        res.json(data);
+    } else {
+        res.status(500).json({ code: 500, msg: '获取消费数据失败' });
+    }
+
+})
+router.get('/subsidy', async (req, res) => {
+    const token = await getAccessToken();
+    const cacheKey = 'Subsidy'
+    // 2. 用 token 拉取当前页的账单数据
+    const data = await getCachedData(cacheKey, async () => {
+        const res = await getSubsidy(token);
+        return res;
+    });
+    if (data) {
+        res.json(data);
+    } else {
+        res.status(500).json({ code: 500, msg: '获取补贴数据失败' });
     }
 
 })
