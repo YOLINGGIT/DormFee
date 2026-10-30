@@ -16,9 +16,8 @@ module.exports = async function getParticular(Authorization, id) {
                 'Referer': 'https://zwdk.gdxzzy.edu.cn/h5/',
             },
         })
-        console.log(res);
-
-        return res.data
+        // 上游 code !== 200（如 token 失效）视为失败，返回 false 不落缓存
+        return res.data && res.data.code === 200 ? res.data : false;
 
     } catch (e) {
         console.log('依赖接口错误获取详细失败', e.message);

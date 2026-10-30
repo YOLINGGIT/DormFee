@@ -19,8 +19,8 @@ module.exports = async function getBalance(Authorization) {
             },
             data: payload,
         })
-        
-        return res.data
+        // 上游 code !== 200（如 token 失效）视为失败，返回 false 不落缓存
+        return res.data && res.data.code === 200 ? res.data : false;
     } catch (e) {
         console.log('依赖接口错误获取余额失败', e.message);
         return false

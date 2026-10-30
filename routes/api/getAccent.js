@@ -17,7 +17,9 @@ module.exports = async function getAccent() {
                 loginType: 1
             },
         });
-        return res.data;
+        // 只有 code === 200 且拿到 accessToken 才算登录成功；失败返回 false，不进入缓存
+        const { data } = res.data || {};
+        return res.data && res.data.code === 200 && data && data.accessToken ? data.accessToken : false;
     } catch (e) {
         console.log('依赖接口错误获取凭证出错', e.message);
         return false;

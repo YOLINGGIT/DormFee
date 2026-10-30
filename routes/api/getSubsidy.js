@@ -21,7 +21,8 @@ module.exports = async function getSubsidy(Authorization) {
             },
             data: payload,
         })
-        return res.data
+        // 上游 code !== 200（如 token 失效）视为失败，返回 false 不落缓存
+        return res.data && res.data.code === 200 ? res.data : false;
     } catch (e) {
         console.log('依赖接口获取补贴错误', e.message);
         return false

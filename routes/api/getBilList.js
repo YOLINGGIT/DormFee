@@ -25,7 +25,8 @@ module.exports = async function getBillList(Authorization, Pagination) {
             },
             data: payload,
         })
-        return res.data
+        // 上游 code !== 200（如 token 失效）视为失败，返回 false 不落缓存
+        return res.data && res.data.code === 200 ? res.data : false;
     } catch (e) {
         console.log('依赖接口错误获取账单',e.message);
         return false
